@@ -18,7 +18,7 @@ const page: FC<pageProps> = ({ }) => {
     }, [gameMode])
 
     return <div>
-        <TicTacToe />
+        <TicTacToe gameMode={gameMode} />
     </div>
 }
 
