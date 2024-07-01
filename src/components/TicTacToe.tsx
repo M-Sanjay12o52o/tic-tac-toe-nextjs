@@ -45,13 +45,16 @@ function TicTacToe({ gameMode }: { gameMode: string | null }) {
 
     const renderSquare = (index: number) => {
         return (
-            <div
+            <button
                 key={index}
-                className="rounded-md w-24 h-24 flex items-center justify-center border-2 border-black text-4xl bg-slate-500"
+                className={`w-24 h-24 text-4xl font-bold rounded-lg shadow-md transition-all duration-200 
+                ${board[index] ? 'bg-gray-700' : 'bg-gray-200 hover:bg-gray-300'} 
+                ${board[index] === 'X' ? 'text-red-500' : board[index] === 'O' ? 'text-blue-500' : 'text-transparent'}`}
                 onClick={() => handleClick(index)}
+                disabled={!!board[index] || !!calculateWinner(board)}
             >
                 {board[index]}
-            </div>
+            </button>
         );
     };
 
@@ -84,48 +87,60 @@ function TicTacToe({ gameMode }: { gameMode: string | null }) {
     const isTie = !winner && isBoardFull(board);
 
     return (
-        <div className="flex flex-col items-center justify-center h-screen">
-            <h1 className="text-6xl font-bold mb-8">TIC-TAC-TOE</h1>
+        <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-purple-400 to-blue-500 text-white p-4">
+            <h1 className="text-6xl font-bold mb-8 text-yellow-300 drop-shadow-lg">TIC-TAC-TOE</h1>
             {!gameMode ? (
-                <div className="flex flex-col items-center justify-center h-screen bg-gray-900">
-                    <h3 className="text-4xl font-medium mt-4 mb-6 text-gray-100">
+                <div className="flex flex-col items-center justify-center bg-white bg-opacity-20 rounded-xl p-8 backdrop-filter backdrop-blur-lg">
+                    <h3 className="text-4xl font-medium mb-6 text-white">
                         Choose a game mode
                     </h3>
                     <div className="flex space-x-4">
                         <button
-                            onClick={handleGameModeSelection.bind(null, "One Player")}
-                            className="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg transform hover:scale-105 transition-transform"
+                            onClick={() => handleGameModeSelection("One Player")}
+                            className="bg-yellow-400 hover:bg-yellow-500 text-gray-800 font-bold py-3 px-6 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-200"
                         >
                             One Player
                         </button>
                         <button
-                            onClick={handleGameModeSelection.bind(null, "Two Player")}
-                            className="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg transform hover:scale-105 transition-transform"
+                            onClick={() => handleGameModeSelection("Two Player")}
+                            className="bg-green-400 hover:bg-green-500 text-gray-800 font-bold py-3 px-6 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-200"
                         >
                             Two Player
                         </button>
                     </div>
                 </div>
-
             ) : (
-                <h2 className="text-2xl font-bold mb-4 text-gray-700">Game mode: {gameMode}</h2>
+                <>
+                    <h2 className="text-2xl font-bold mb-4 text-white">Game mode: {gameMode}</h2>
+                    <h3 className="text-xl mb-4">Playing as <span className={`font-bold ${isXNext ? 'text-red-500' : 'text-blue-500'}`}>{isXNext ? "X" : "O"}</span></h3>
+                    <div className="grid grid-cols-3 gap-2 bg-white bg-opacity-20 p-4 rounded-xl backdrop-filter backdrop-blur-lg">
+                        {Array.from({ length: 9 }).map((_, index) => renderSquare(index))}
+                    </div>
+                    {(winner || isTie) && (
+                        <div className="mt-8 text-center bg-white bg-opacity-20 p-4 rounded-xl backdrop-filter backdrop-blur-lg">
+                            {winner && (
+                                <h2 className="text-4xl font-bold text-yellow-300">
+                                    Winner: <span className={`${winner === 'X' ? 'text-red-500' : 'text-blue-500'}`}>{winner}</span>
+                                </h2>
+                            )}
+                            {isTie && (
+                                <h2 className="text-4xl font-bold text-yellow-300">
+                                    It's a Tie!
+                                </h2>
+                            )}
+                            <button
+                                onClick={() => {
+                                    setBoard(Array(9).fill(null));
+                                    setIsXNext(true);
+                                }}
+                                className="mt-4 bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-200"
+                            >
+                                Play Again
+                            </button>
+                        </div>
+                    )}
+                </>
             )}
-            <br />
-            <h3>Playing as {isXNext ? "X" : "O"}</h3>
-            <br />
-            <div className="grid grid-cols-3 gap-0">
-                {Array.from({ length: 9 }).map((_, index) => renderSquare(index))}
-            </div>
-            {winner && (
-                <h2 className="text-4xl font-bold mt-4">
-                    Winner: {winner}
-                </h2>
-            )}
-            {
-                <h2 className="text-4xl font-bold mt-4">
-                    {isTie ? "It's a Tie" : ""}
-                </h2>
-            }
         </div>
     );
 }
