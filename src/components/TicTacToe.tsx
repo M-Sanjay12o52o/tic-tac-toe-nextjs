@@ -128,10 +128,16 @@ function TicTacToe({ gameMode }: { gameMode: string | null }) {
     useEffect(() => {
         const winner = calculateWinner(board);
         if (winner || isBoardFull(board)) {
+            console.log("winner", winner);
+
             handleGameOver(winner);
+
+            // setTimeout(() => {
+            //     handleGameOver(winner);
+            // }, 1200);
         }
         if (!isXNext && gameMode === "One Player" && !gameOver) {
-            setTimeout(computerMove, 500);
+            setTimeout(computerMove, 600);
         }
     }, [board]);
 
