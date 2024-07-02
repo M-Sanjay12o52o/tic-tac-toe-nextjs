@@ -25,17 +25,17 @@ const Page: FC<PageProps> = () => {
         <div className="flex flex-col items-center justify-center space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
           <button
             className="w-full sm:w-auto bg-yellow-400 hover:bg-yellow-500 text-gray-800 font-bold py-3 px-6 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-200"
-            onClick={() => handleGameModeSelection('onePlayer')}
+            onClick={() => handleGameModeSelection('One Player')}
           >
             One Player
           </button>
           <button
             className="w-full sm:w-auto bg-green-400 hover:bg-green-500 text-gray-800 font-bold py-3 px-6 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-200"
-            onClick={() => handleGameModeSelection('twoPlayer')}
+            onClick={() => handleGameModeSelection('Two Player')}
           >
             Two Player
           </button>
-        </div>
+        </div>One Player
       </div>
     </div>
   );
